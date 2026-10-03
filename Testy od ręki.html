@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Testy od ręki – z nami dobra ocena gwarantowana!</title>
+<style>
+:root{--c1:#0511F2;--c2:#0455BF;--c3:#0597F2;--c4:#05F2DB;--c5:#008FFD;--bg:#f6faff;--ink:#06143a;--mute:#4a5b82;--card:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hartwell','Segoe UI',Helvetica,Arial,sans-serif;line-height:1.6;overflow-x:hidden}
+img{max-width:100%}
+/* przyciski: powolne kolorowanie */
+.btn{position:relative;display:inline-block;overflow:hidden;isolation:isolate;padding:16px 34px;border-radius:999px;border:2px solid var(--c1);background:#fff;color:var(--c1);font:inherit;font-weight:700;font-size:1.05rem;text-decoration:none;cursor:pointer;transition:color .9s ease,transform .5s ease,box-shadow .9s ease}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,var(--c1),var(--c5),var(--c4));transform:translateX(-101%);transition:transform .9s cubic-bezier(.3,.7,.2,1)}
+.btn:hover,.btn:focus-visible{color:#fff;transform:translateY(-3px);box-shadow:0 14px 34px rgba(5,17,242,.28)}
+.btn:hover::before,.btn:focus-visible::before{transform:none}
+.btn.solid{background:var(--c1);color:#fff;border-color:var(--c1)}
+.btn.solid::before{background:linear-gradient(90deg,var(--c4),var(--c3));transform:translateX(-101%)}
+.btn.solid:hover,.btn.solid:focus-visible{color:var(--ink)}
+.btn:focus-visible{outline:3px solid var(--c4);outline-offset:3px}
+/* nagłówek */
+header{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:calc(10px + env(safe-area-inset-top,0px)) 5vw 10px;backdrop-filter:blur(14px);background:rgba(246,250,255,.72);transform:translateY(-100%);animation:drop 1s .3s forwards cubic-bezier(.2,.8,.2,1)}
+@keyframes drop{to{transform:none}}
+header img{height:46px;display:block}
+header .btn{padding:10px 24px;font-size:.95rem}
+.bar{position:fixed;top:0;left:0;height:4px;width:calc(var(--sp,0)*100%);background:linear-gradient(90deg,var(--c1),var(--c4));z-index:30}
+/* hero */
+.hero{position:relative;min-height:100vh;display:grid;place-items:center;text-align:center;padding:120px 6vw 80px;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.55;will-change:transform}
+.b1{width:46vw;height:46vw;background:var(--c3);left:-12vw;top:-8vw;transform:translate(calc(var(--hp,0)*-8vw),calc(var(--hp,0)*30vh))}
+.b2{width:38vw;height:38vw;background:var(--c4);right:-10vw;top:20vh;transform:translate(calc(var(--hp,0)*10vw),calc(var(--hp,0)*-20vh))}
+.b3{width:30vw;height:30vw;background:var(--c1);opacity:.28;left:35vw;bottom:-14vw;transform:translateY(calc(var(--hp,0)*-40vh)) scale(calc(1 + var(--hp,0)))}
+.hero-in{position:relative;z-index:2;transform:scale(calc(1 - var(--hp,0)*.25)) translateY(calc(var(--hp,0)*-8vh));opacity:calc(1 - var(--hp,0)*1.3)}
+.hero img{width:min(520px,80vw);height:auto;animation:pop 1.2s .2s both cubic-bezier(.2,1.2,.3,1)}
+@keyframes pop{from{opacity:0;transform:scale(.6) rotate(-4deg)}to{opacity:1;transform:none}}
+h1{font-size:clamp(2.2rem,6.4vw,5.2rem);line-height:1.05;margin:.4em auto .3em;max-width:16ch;letter-spacing:-.02em;background:linear-gradient(100deg,var(--c1),var(--c5),var(--c3),var(--c1));background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 7s linear infinite}
+@keyframes flow{to{background-position:-250% 0}}
+.hero p{font-size:clamp(1.05rem,2vw,1.35rem);color:var(--mute);max-width:36ch;margin:0 auto 1.8em;animation:fade 1s 1s both}
+.hero .btn{animation:fade 1s 1.3s both}
+@keyframes fade{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.scroll-hint{position:absolute;bottom:26px;left:50%;width:26px;height:42px;margin-left:-13px;border:2px solid var(--c2);border-radius:14px;opacity:calc(1 - var(--hp,0)*4)}
+.scroll-hint::after{content:"";position:absolute;left:50%;top:8px;width:4px;height:8px;margin-left:-2px;background:var(--c1);border-radius:2px;animation:wheel 1.6s infinite}
+@keyframes wheel{to{transform:translateY(14px);opacity:0}}
+/* sekcje */
+section{padding:14vh 6vw}
+.wrap{max-width:1080px;margin:0 auto}
+h2{font-size:clamp(1.9rem,4.6vw,3.6rem);line-height:1.1;margin:0 0 .5em;letter-spacing:-.02em;color:var(--c2)}
+.big{font-size:clamp(1.6rem,4vw,3rem);font-weight:700;line-height:1.2;max-width:22ch;margin:0 auto;text-align:center}
+.reveal-words span{display:inline-block;opacity:calc(.12 + var(--wp,0)*.88);transform:translateY(calc((1 - var(--wp,0))*22px));filter:blur(calc((1 - var(--wp,0))*6px))}
+.intro{background:#fff;padding:22vh 6vw}
+/* kroki */
+.steps{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:6vw;align-items:start}
+.sticky{position:sticky;top:18vh}
+.sticky p{color:var(--mute);max-width:30ch}
+.cards{display:grid;gap:34vh;padding-bottom:10vh}
+.step{background:var(--card);border-radius:28px;padding:34px;box-shadow:0 24px 60px rgba(4,85,191,.14);border:1px solid rgba(5,151,242,.18);opacity:calc(.2 + var(--p,0)*.8);transform:scale(calc(.82 + var(--p,0)*.18)) translateY(calc((1 - var(--p,0))*60px)) rotate(calc((1 - var(--p,0))*-2deg))}
+.step .n{display:grid;place-items:center;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c3));color:#fff;font-weight:800;font-size:1.3rem;margin-bottom:14px;transform:rotate(calc(var(--p,0)*360deg))}
+.step h3{margin:0 0 .3em;font-size:1.5rem;color:var(--c1)}
+.step p{margin:0;color:var(--mute)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chips i{font-style:normal;padding:6px 14px;border-radius:99px;background:rgba(5,242,219,.2);color:var(--c2);font-size:.9rem;font-weight:600}
+/* oferty */
+.duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px}
+.big-card{border-radius:36px;padding:clamp(28px,4vw,52px);color:#fff;position:relative;overflow:hidden;opacity:calc(.25 + var(--p,0)*.75);transform:translateY(calc((1 - var(--p,0))*90px)) scale(calc(.9 + var(--p,0)*.1))}
+.big-card.a{background:linear-gradient(140deg,var(--c1),var(--c5))}
+.big-card.b{background:linear-gradient(140deg,var(--c2),var(--c4));color:var(--ink)}
+.big-card h3{font-size:clamp(1.5rem,3vw,2.2rem);margin:0 0 .4em}
+.big-card p{margin:0 0 1.2em;max-width:34ch}
+.price{font-size:clamp(3rem,8vw,5.5rem);font-weight:800;line-height:1;margin-bottom:.2em;transform:translateX(calc((1 - var(--p,0))*-60px))}
+.big-card .btn{border-color:#fff}
+.big-card.b .btn{border-color:var(--ink)}
+.pill{display:inline-block;margin:0 6px 6px 0;padding:8px 18px;border-radius:99px;background:rgba(255,255,255,.22);font-weight:700;border:1px solid rgba(255,255,255,.5)}
+/* koniec */
+.final{text-align:center;background:linear-gradient(180deg,var(--bg),#e3f1ff)}
+.final h2{font-size:clamp(2.2rem,6vw,4.6rem);transform:scale(calc(.7 + var(--p,0)*.3));opacity:calc(.2 + var(--p,0)*.8)}
+footer{text-align:center;padding:30px 6vw 40px;color:var(--mute);background:#e3f1ff;font-size:.9rem}
+@media(max-width:800px){.steps{grid-template-columns:1fr}.sticky{position:static}.cards{gap:14vh}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.hero-in,.step,.big-card,.final h2,.reveal-words span,.price,.step .n{transform:none!important;opacity:1!important;filter:none!important}header{transform:none}}
+</style>
+</head>
+<body>
+<div class="bar"></div>
+<header>
+  <img src="https://testyodreki.pages.dev/tod-content/testyodreki_logo.svg" alt="Testy od ręki">
+  <a class="btn solid" href="#sklep">Przejdź do sklepu</a>
+</header>
+
+<div class="hero" id="top">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <div class="hero-in">
+    <img src="https://testyodreki.pages.dev/tod-content/testyodreki_logo.svg" alt="Testy od ręki">
+    <h1>Z nami dobra ocena gwarantowana!</h1>
+    <p>Testy, kartkówki i bazy zadań prosto na Twój e-mail. Szybko i bez stresu.</p>
+    <a class="btn solid" href="#jak">Jak kupić test?</a>
+  </div>
+  <div class="scroll-hint"></div>
+</div>
+
+<section class="intro">
+  <p class="big reveal-words" data-words>Wybierasz test. Wysyłasz zgłoszenie. My robimy resztę.</p>
+</section>
+
+<section id="jak">
+  <div class="wrap steps">
+    <div class="sticky">
+      <h2>Jak zakupić test?</h2>
+      <p>Cztery kroki od zgłoszenia do gotowego testu w Twojej skrzynce.</p>
+    </div>
+    <div class="cards">
+      <article class="step" data-p>
+        <div class="n">1</div>
+        <h3>Przejdź do sklepu i wypełnij zgłoszenie</h3>
+        <p>Wpisz swój adres e-mail. Musi być poprawny i taki, do którego masz dostęp. Wybierz, czego potrzebujesz:</p>
+        <div class="chips"><i>test</i><i>kartkówka</i><i>dysk</i><i>baza zadań</i></div>
+      </article>
+      <article class="step" data-p>
+        <div class="n">2</div>
+        <h3>Podaj szczegóły</h3>
+        <p>Wpisz przedmiot, nazwę podręcznika, wydawnictwo, klasę, poziom, dział i temat (jeśli dotyczy), a potem wyślij zgłoszenie.</p>
+      </article>
+      <article class="step" data-p>
+        <div class="n">3</div>
+        <h3>Poczekaj na odpowiedź agenta</h3>
+        <p>Skontaktujemy się z Tobą w ciągu 24 godzin, zazwyczaj odpowiadamy najpóźniej po 4 godzinach. W odpowiedzi dostaniesz dane do wpłaty.</p>
+      </article>
+      <article class="step" data-p>
+        <div class="n">4</div>
+        <h3>Opłać i odbierz test</h3>
+        <p>Po wpłacie test trafia na podany adres e-mail. To już wszystko!</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="sklep">
+  <div class="wrap">
+    <h2>Potrzebujesz więcej?</h2>
+    <div class="duo">
+      <div class="big-card a" data-p>
+        <h3>Ekspresowa pomoc</h3>
+        <div class="price">+5 zł</div>
+        <p>Kliknij „Proszę o ekspresową pomoc”, a odpowiemy najszybciej, jak to możliwe. Jeśli czekasz dłużej, niż powinieneś, nie doliczamy tych 5 zł.</p>
+        <a class="btn solid" href="#sklep">Proszę o ekspresową pomoc</a>
+      </div>
+      <div class="big-card b" data-p>
+        <h3>Wydruk pod drzwi lub do punktu</h3>
+        <div style="margin-bottom:1em"><span class="pill" style="background:rgba(255,255,255,.5);border-color:rgba(6,20,58,.3)">MONO</span><span class="pill" style="background:rgba(255,255,255,.5);border-color:rgba(6,20,58,.3)">KOLOR</span></div>
+        <p>Wybierz „Chcę wydruk” oraz MONO albo KOLOR. Nasz agent poda dodatkową opłatę za wysyłkę i wydruk.</p>
+        <a class="btn" href="#sklep">Chcę wydruk</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final" data-p>
+  <h2>Z nami dobra ocena gwarantowana!</h2>
+  <a class="btn solid" href="#sklep">Przejdź do sklepu</a>
+</section>
+<footer>© Testy od ręki</footer>
+
+<script>
+(function(){
+  var root=document.documentElement,hero=document.querySelector('.hero');
+  var w=document.querySelector('[data-words]');
+  w.innerHTML=w.textContent.split(' ').map(function(t){return '<span>'+t+'&nbsp;</span>'}).join('');
+  var words=[].slice.call(w.children),items=[].slice.call(document.querySelectorAll('[data-p]'));
+  function clamp(v){return Math.max(0,Math.min(1,v))}
+  function tick(){
+    var h=window.innerHeight,y=window.scrollY;
+    var max=document.body.scrollHeight-h;
+    root.style.setProperty('--sp',max>0?y/max:0);
+    hero.style.setProperty('--hp',clamp(y/h));
+    items.forEach(function(el){
+      var r=el.getBoundingClientRect();
+      el.style.setProperty('--p',clamp((h*.95-r.top)/(h*.5)));
+    });
+    var r=w.getBoundingClientRect(),base=clamp((h*.85-r.top)/(h*.6));
+    words.forEach(function(s,i){
+      s.style.setProperty('--wp',clamp(base*(words.length+4)/ (words.length) - i/words.length*1.0));
+    });
+    ticking=false;
+  }
+  var ticking=false;
+  function req(){if(!ticking){ticking=true;requestAnimationFrame(tick)}}
+  addEventListener('scroll',req,{passive:true});addEventListener('resize',req);tick();
+})();
+</script>
+</body>
+</html>
