@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sklep - Testy od ręki</title>
+<style>
+:root{
+  --c1:#0511F2;
+  --c2:#0455BF;
+  --c3:#0597F2;
+  --c4:#05F2DB;
+  --c5:#008FFD;
+  --bg:#f6faff;
+  --ink:#06143a;
+  --mute:#4a5b82;
+  --card:#fff;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hartwell','Segoe UI',Helvetica,Arial,sans-serif;line-height:1.6;overflow-x:hidden}
+img{max-width:100%}
+
+.btn{position:relative;display:inline-block;overflow:hidden;isolation:isolate;padding:16px 34px;border-radius:999px;border:2px solid var(--c1);background:#fff;color:var(--c1);font:inherit;font-weight:700;font-size:1.05rem;text-decoration:none;cursor:pointer;transition:color .9s ease,transform .5s ease,box-shadow .9s ease}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,var(--c1),var(--c5),var(--c4));transform:translateX(-101%);transition:transform .9s cubic-bezier(.3,.7,.2,1)}
+.btn:hover,.btn:focus-visible{color:#fff;transform:translateY(-3px);box-shadow:0 14px 34px rgba(5,17,242,.28)}
+.btn:hover::before,.btn:focus-visible::before{transform:none}
+.btn.solid{background:var(--c1);color:#fff;border-color:var(--c1)}
+.btn.solid::before{background:linear-gradient(90deg,var(--c4),var(--c3));transform:translateX(-101%)}
+.btn.solid:hover,.btn.solid:focus-visible{color:var(--ink)}
+.btn:focus-visible{outline:3px solid var(--c4);outline-offset:3px}
+
+header{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:calc(10px + env(safe-area-inset-top,0px)) 5vw 10px;backdrop-filter:blur(14px);background:rgba(246,250,255,.72);transform:translateY(-100%);animation:drop 1s .3s forwards cubic-bezier(.2,.8,.2,1)}
+@keyframes drop{to{transform:none}}
+header img{height:46px;display:block}
+header .btn{padding:10px 24px;font-size:.95rem}
+.bar{position:fixed;top:0;left:0;height:4px;width:calc(var(--sp,0)*100%);background:linear-gradient(90deg,var(--c1),var(--c4));z-index:30}
+
+.hero{position:relative;padding:140px 6vw 60px;text-align:center;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.55;will-change:transform}
+.b1{width:46vw;height:46vw;background:var(--c3);left:-12vw;top:-8vw;transform:translate(calc(var(--hp,0)*-8vw),calc(var(--hp,0)*30vh))}
+.b2{width:38vw;height:38vw;background:var(--c4);right:-10vw;top:20vh;transform:translate(calc(var(--hp,0)*10vw),calc(var(--hp,0)*-20vh))}
+.b3{width:30vw;height:30vw;background:var(--c1);opacity:.28;left:35vw;bottom:-14vw;transform:translateY(calc(var(--hp,0)*-40vh)) scale(calc(1 + var(--hp,0)))}
+.hero-in{position:relative;z-index:2;max-width:700px;margin:0 auto}
+
+h1{font-size:clamp(2.2vw,5vw,3.6rem);line-height:1.15;margin:0 auto .3em;color:var(--c2)}
+.hero p{font-size:clamp(1.05rem,2vw,1.25rem);color:var(--mute);max-width:42ch;margin:0 auto 1.6em}
+
+.shop-section{padding:20px 6vw 100px;position:relative;z-index:2}
+.shop-wrap{max-width:840px;margin:0 auto;background:var(--card);border-radius:32px;padding:clamp(28px,5vw,56px);box-shadow:0 30px 70px rgba(4,85,191,.15);border:1px solid rgba(5,151,242,.2)}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.form-group{margin-bottom:22px}
+.form-group.full{grid-column:1/-1}
+label{display:block;font-weight:700;margin-bottom:8px;color:var(--c2);font-size:0.95rem}
+.hint{font-size:0.85rem;color:var(--mute);margin-top:6px;font-weight:400;line-height:1.4}
+
+input[type="text"],input[type="email"],textarea{width:100%;padding:16px 20px;border-radius:16px;border:2px solid rgba(5,151,242,.25);background:var(--bg);color:var(--ink);font:inherit;font-size:1rem;transition:border-color .3s,box-shadow .3s}
+input:focus,textarea:focus{outline:none;border-color:var(--c1);box-shadow:0 0 0 4px rgba(5,242,219,.25);background:#fff}
+textarea{resize:vertical;min-height:100px}
+
+/* Custom styled dropdown to match artifact design */
+.custom-select-wrapper{position:relative;user-select:none;}
+.custom-select{position:relative;display:flex;flex-direction:column;}
+.custom-select-trigger{position:relative;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-radius:16px;border:2px solid rgba(5,151,242,.25);background:var(--bg);color:var(--ink);font:inherit;font-size:1rem;cursor:pointer;transition:border-color .3s,box-shadow .3s,background .3s;}
+.custom-select-trigger::after{content:"";width:10px;height:10px;border-right:2.5px solid var(--c2);border-bottom:2.5px solid var(--c2);transform:rotate(45deg);transition:transform .3s;margin-left:10px;}
+.custom-select.open .custom-select-trigger{border-color:var(--c1);box-shadow:0 0 0 4px rgba(5,242,219,.25);background:#fff;}
+.custom-select.open .custom-select-trigger::after{transform:rotate(-135deg);}
+.custom-options{position:absolute;top:calc(100% + 8px);left:0;right:0;background:#fff;border-radius:16px;border:2px solid rgba(5,151,242,.25);box-shadow:0 14px 34px rgba(4,85,191,.15);z-index:99;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-10px);transition:all .3s ease;max-height:280px;overflow-y:auto;}
+.custom-select.open .custom-options{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);}
+.custom-option{padding:14px 20px;cursor:pointer;transition:background .2s,color .2s;font-weight:500;color:var(--ink);}
+.custom-option:hover{background:rgba(5,151,242,.08);color:var(--c1);}
+.custom-option.selected{background:var(--c1);color:#fff;font-weight:700;}
+
+.options-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
+.option-pill{position:relative;cursor:pointer}
+.option-pill input{position:absolute;opacity:0;cursor:pointer}
+.pill-box{display:inline-block;padding:12px 22px;border-radius:99px;background:var(--bg);border:2px solid rgba(5,151,242,.25);font-weight:600;font-size:0.95rem;color:var(--mute);transition:all .3s}
+.option-pill input:checked ~ .pill-box{background:var(--c1);color:#fff;border-color:var(--c1);box-shadow:0 8px 20px rgba(5,17,242,.25)}
+
+.addons-box{background:rgba(5,151,242,.04);border-radius:20px;padding:22px;border:1px dashed rgba(5,151,242,.3);margin-bottom:24px}
+.checkbox-label{display:flex;align-items:center;gap:12px;cursor:pointer;font-weight:600;color:var(--ink);margin-bottom:12px}
+.checkbox-label:last-child{margin-bottom:0}
+.checkbox-label input{width:22px;height:22px;accent-color:var(--c1);cursor:pointer}
+
+.sub-options{display:none;margin-top:10px;margin-left:34px;padding-left:16px;border-left:2px solid rgba(5,151,242,.2)}
+
+.submit-wrap{text-align:center;margin-top:34px}
+.submit-wrap .btn{width:100%;max-width:400px;font-size:1.15rem}
+
+.success-banner{display:none;background:linear-gradient(135deg,#05F2DB,#0597F2);color:var(--ink);padding:30px;border-radius:24px;text-align:center;font-weight:600;margin-top:20px;box-shadow:0 15px 30px rgba(5,242,219,.3);animation:fadeUp .6s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+footer{text-align:center;padding:30px 6vw 40px;color:var(--mute);background:#f6faff;font-size:.9rem;position:relative;z-index:10}
+
+@media(max-width:768px){.form-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}header{transform:none}}
+</style>
+</head>
+<body>
+<div class="bar"></div>
+<header>
+  <a href="/"><img src="https://testyodreki.pages.dev/tod-content/testyodreki_logo.svg" alt="Testy od ręki"></a>
+  <a class="btn" href="/">Strona główna</a>
+</header>
+
+<div class="hero">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <div class="hero-in">
+    <h1>Złóż zamówienie na test</h1>
+    <p>Wypełnij formularz poniżej, podaj szczegóły materiałów, a my natychmiast zajmiemy się Twoim zgłoszeniem i wyślemy dane do wpłaty!</p>
+  </div>
+</div>
+
+<section class="shop-section">
+  <div class="shop-wrap">
+    <form id="orderForm">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label for="email">Twój adres e-mail (na niego wyślemy test):</label>
+          <input type="email" id="email" required placeholder="np. imie@domena.pl">
+        </div>
+
+        <div class="form-group full">
+          <label>Wybierz typ materiału:</label>
+          <div class="options-row">
+            <label class="option-pill">
+              <input type="radio" name="typ" value="Test" checked>
+              <span class="pill-box">Test</span>
+            </label>
+            <label class="option-pill">
+              <input type="radio" name="typ" value="Kartkówka">
+              <span class="pill-box">Kartkówka</span>
+            </label>
+            <label class="option-pill">
+              <input type="radio" name="typ" value="Dysk">
+              <span class="pill-box">Dysk</span>
+            </label>
+            <label class="option-pill">
+              <input type="radio" name="typ" value="Baza zadań">
+              <span class="pill-box">Baza zadań</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Przedmiot:</label>
+          <div class="custom-select-wrapper">
+            <div class="custom-select" id="selectPrzedmiot">
+              <div class="custom-select-trigger">Wybierz przedmiot...</div>
+              <div class="custom-options">
+                <div class="custom-option" data-value="Język polski">Język polski</div>
+                <div class="custom-option" data-value="Język angielski">Język angielski</div>
+                <div class="custom-option" data-value="Język niemiecki">Język niemiecki</div>
+                <div class="custom-option" data-value="Język francuski">Język francuski</div>
+                <div class="custom-option" data-value="Język hiszpański">Język hiszpański</div>
+                <div class="custom-option" data-value="Język rosyjski">Język rosyjski</div>
+                <div class="custom-option" data-value="Język włoski">Język włoski</div>
+                <div class="custom-option" data-value="Matematyka">Matematyka</div>
+                <div class="custom-option" data-value="Biologia">Biologia</div>
+                <div class="custom-option" data-value="Chemia">Chemia</div>
+                <div class="custom-option" data-value="Fizyka">Fizyka</div>
+                <div class="custom-option" data-value="Geografia">Geografia</div>
+                <div class="custom-option" data-value="Historia">Historia</div>
+                <div class="custom-option" data-value="WOS (Wiedza o społeczeństwie)">WOS (Wiedza o społeczeństwie)</div>
+                <div class="custom-option" data-value="Informatyka">Informatyka</div>
+                <div class="custom-option" data-value="Religia">Religia</div>
+                <div class="custom-option" data-value="Edukacja dla bezpieczeństwa (EDB)">Edukacja dla bezpieczeństwa (EDB)</div>
+                <div class="custom-option" data-value="Biznes i zarządzanie / Podstawy przedsiębiorczości">Biznes i zarządzanie / Podst. przedsiębiorczości</div>
+                <div class="custom-option" data-value="Historia i teraźniejszość (HIT)">Historia i teraźniejszość (HIT)</div>
+                <div class="custom-option" data-value="Przyroda">Przyroda</div>
+                <div class="custom-option" data-value="Technika">Technika</div>
+                <div class="custom-option" data-value="Plastyka">Plastyka</div>
+                <div class="custom-option" data-value="Muzyka">Muzyka</div>
+                <div class="custom-option" data-value="Filozofia">Filozofia</div>
+                <div class="custom-option" data-value="Inny przedmiot">Inny przedmiot</div>
+              </div>
+            </div>
+            <input type="hidden" id="przedmiotValue" required>
+          </div>
+        </div>
+
+        <div class="form-group" id="innyPrzedmiotGroup" style="display:none;">
+          <label for="innyPrzedmiotInput">Wpisz inny przedmiot:</label>
+          <input type="text" id="innyPrzedmiotInput" placeholder="Podaj nazwę przedmiotu...">
+        </div>
+
+        <div class="form-group">
+          <label>Klasa / Poziom:</label>
+          <div class="custom-select-wrapper">
+            <div class="custom-select" id="selectKlasa">
+              <div class="custom-select-trigger">Wybierz klasę...</div>
+              <div class="custom-options">
+                <div class="custom-option" data-value="4 SP">4 SP</div>
+                <div class="custom-option" data-value="5 SP">5 SP</div>
+                <div class="custom-option" data-value="6 SP">6 SP</div>
+                <div class="custom-option" data-value="7 SP">7 SP</div>
+                <div class="custom-option" data-value="8 SP">8 SP</div>
+                <div class="custom-option" data-value="1LO/TECH">1LO/TECH</div>
+                <div class="custom-option" data-value="2LO/TECH">2LO/TECH</div>
+                <div class="custom-option" data-value="3LO/TECH">3LO/TECH</div>
+                <div class="custom-option" data-value="4LO/TECH">4LO/TECH</div>
+                <div class="custom-option" data-value="5TECH">5TECH</div>
+              </div>
+            </div>
+            <input type="hidden" id="klasaValue" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="podrecznik">Podręcznik:</label>
+          <input type="text" id="podrecznik" required placeholder="np. Biologia na czasie, To jest chemia...">
+        </div>
+
+        <div class="form-group">
+          <label for="wydawnictwo">Wydawnictwo:</label>
+          <input type="text" id="wydawnictwo" required placeholder="Wpisz nazwę wydawnictwa...">
+          <div class="hint">💡 <b>Jak znaleźć wydawnictwo?</b> Spójrz na samą górę, dół lub na grzbiet okładki swojego podręcznika — tam znajduje się nazwa oraz małe logo wydawnictwa, które wydało książkę.</div>
+        </div>
+
+        <div class="form-group full">
+          <label for="dzial">Dział (nazwa działu) <span style="color:#e11d48">*</span>:</label>
+          <input type="text" id="dzial" required placeholder="Wpisz dokładną nazwę działu (np. Dział 3: Kinematyka)">
+          <div class="hint">Podanie nazwy działu jest obowiązkowe w celu prawidłowego przygotowania materiału.</div>
+        </div>
+
+        <div class="form-group full">
+          <label for="tematy">Szczegółowe tematy (opcjonalnie):</label>
+          <textarea id="tematy" placeholder="Możesz podać konkretne tematy lekcji, jeśli są wymagane..."></textarea>
+        </div>
+      </div>
+
+      <div class="addons-box">
+        <label class="checkbox-label">
+          <input type="checkbox" id="ekspres">
+          <span>Ekspresowa pomoc (+5 zł - odpowiedź najszybciej jak to możliwe)</span>
+        </label>
+        <label class="checkbox-label" id="wydrukToggle">
+          <input type="checkbox" id="wydruk">
+          <span>Chcę zamówić wydruk fizyczny</span>
+        </label>
+        <div class="sub-options" id="wydrukOptions">
+          <label style="font-weight:700;color:var(--c2);font-size:0.9rem;margin-bottom:6px;display:block;">Wybierz rodzaj wydruku:</label>
+          <div class="options-row">
+            <label class="option-pill">
+              <input type="radio" name="rodzajWydruku" value="Mono (Czarno-biały)" checked>
+              <span class="pill-box" style="padding:8px 16px;font-size:0.9rem;">Mono (Czarno-biały)</span>
+            </label>
+            <label class="option-pill">
+              <input type="radio" name="rodzajWydruku" value="Kolor">
+              <span class="pill-box" style="padding:8px 16px;font-size:0.9rem;">Kolor</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="submit-wrap">
+        <button type="submit" class="btn solid" id="submitBtn">Wyślij zgłoszenie</button>
+      </div>
+    </form>
+
+    <div id="successBanner" class="success-banner">
+      <h3>Zgłoszenie zostało wysłane pomyślnie!</h3>
+      <p>Nasz agent skontaktuje się z Tobą mailowo w ciągu kilku godzin z danymi do wpłaty.</p>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 - Testy od ręki</footer>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  function clamp(v){return Math.max(0,Math.min(1,v))}
+  function tick(){
+    var h=window.innerHeight,y=window.scrollY;
+    var max=document.body.scrollHeight-h;
+    root.style.setProperty('--sp',max>0?y/max:0);
+    ticking=false;
+  }
+  var ticking=false;
+  function req(){if(!ticking){ticking=true;requestAnimationFrame(tick)}}
+  addEventListener('scroll',req,{passive:true});addEventListener('resize',req);tick();
+
+  // Custom Select Dropdowns Logic
+  const customSelects = document.querySelectorAll('.custom-select');
+  customSelects.forEach(select => {
+    const trigger = select.querySelector('.custom-select-trigger');
+    const options = select.querySelectorAll('.custom-option');
+    const hiddenInput = select.nextElementSibling;
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      // Close other selects
+      customSelects.forEach(s => {
+        if(s !== select) s.classList.remove('open');
+      });
+      select.classList.toggle('open');
+    });
+
+    options.forEach(option => {
+      option.addEventListener('click', () => {
+        options.forEach(o => o.classList.remove('selected'));
+        option.classList.add('selected');
+        trigger.textContent = option.textContent;
+        hiddenInput.value = option.getAttribute('data-value');
+        select.classList.remove('open');
+        select.dispatchEvent(new Event('change'));
+      });
+    });
+  });
+
+  window.addEventListener('click', () => {
+    customSelects.forEach(s => s.classList.remove('open'));
+  });
+
+  // Toggle "Inny przedmiot" input field
+  const selectPrzedmiot = document.getElementById('selectPrzedmiot');
+  const przedmiotValue = document.getElementById('przedmiotValue');
+  const innyPrzedmiotGroup = document.getElementById('innyPrzedmiotGroup');
+  const innyPrzedmiotInput = document.getElementById('innyPrzedmiotInput');
+
+  selectPrzedmiot.addEventListener('change', function(){
+    if(przedmiotValue.value === 'Inny przedmiot'){
+      innyPrzedmiotGroup.style.display = 'block';
+      innyPrzedmiotInput.required = true;
+    } else {
+      innyPrzedmiotGroup.style.display = 'none';
+      innyPrzedmiotInput.required = false;
+    }
+  });
+
+  // Toggle print sub-options visibility
+  const wydrukCheckbox = document.getElementById('wydruk');
+  const wydrukOptions = document.getElementById('wydrukOptions');
+  wydrukCheckbox.addEventListener('change', function(){
+    if(this.checked){
+      wydrukOptions.style.display = 'block';
+    } else {
+      wydrukOptions.style.display = 'none';
+    }
+  });
+
+  const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1555877773376229456/29Gxd2B86Uveh3gJHGX6Ylg4LbXNE9JBnQnWtQCmiA6CYnPidLxUP6rShIZBRLTcQng4';
+  
+  const form = document.getElementById('orderForm');
+  const successBanner = document.getElementById('successBanner');
+  const submitBtn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Wysyłanie zgłoszenia...';
+
+    const email = document.getElementById('email').value;
+    const typ = document.querySelector('input[name="typ"]:checked').value;
+    
+    let przedmiotVal = przedmiotValue.value;
+    if(przedmiotVal === 'Inny przedmiot'){
+      przedmiotVal = 'Inny: ' + innyPrzedmiotInput.value;
+    }
+
+    const klasa = document.getElementById('klasaValue').value;
+    const podrecznik = document.getElementById('podrecznik').value;
+    const wydawnictwo = document.getElementById('wydawnictwo').value;
+    const dzial = document.getElementById('dzial').value;
+    const tematy = document.getElementById('tematy').value || 'Brak dodatkowych tematów';
+    const ekspres = document.getElementById('ekspres').checked ? 'Tak (+5 zł)' : 'Nie';
+    
+    let wydrukInfo = 'Nie';
+    if(wydrukCheckbox.checked){
+      const rodzajWydruku = document.querySelector('input[name="rodzajWydruku"]:checked').value;
+      wydrukInfo = `Tak (${rodzajWydruku})`;
+    }
+
+    const discordPayload = {
+      embeds: [{
+        title: "📥 Nowe zgłoszenie z testyodreki!",
+        color: 363238,
+        fields: [
+          { name: "📧 Adres e-mail", value: email, inline: false },
+          { name: "📚 Typ materiału", value: typ, inline: true },
+          { name: "📖 Przedmiot", value: przedmiotVal, inline: true },
+          { name: "🎓 Klasa / Poziom", value: klasa, inline: true },
+          { name: "📘 Podręcznik", value: podrecznik, inline: true },
+          { name: "🏢 Wydawnictwo", value: wydawnictwo, inline: true },
+          { name: "📑 Dział", value: dzial, inline: false },
+          { name: "📝 Szczegółowe tematy", value: tematy, inline: false },
+          { name: "⚡ Ekspresowa pomoc", value: ekspres, inline: true },
+          { name: "🖨️ Wydruk fizyczny", value: wydrukInfo, inline: true }
+        ],
+        timestamp: new Date().toISOString()
+      }]
+    };
+
+    try {
+      const response = await fetch(DISCORD_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(discordPayload)
+      });
+
+      if (response.ok || response.status === 204) {
+        form.style.display = 'none';
+        successBanner.style.display = 'block';
+      } else {
+        throw new Error('Błąd wysyłania');
+      }
+    } catch(err) {
+      form.style.display = 'none';
+      successBanner.style.display = 'block';
+      successBanner.querySelector('h3').textContent = 'Zgłoszenie przyjęte!';
+    }
+  });
+})();
+</script>
+</body>
+</html>
